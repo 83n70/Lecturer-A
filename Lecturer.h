@@ -5,12 +5,10 @@
 #ifndef LECTURER_LECTURER_H
 #define LECTURER_LECTURER_H
 
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <string>
 #include <vector>
-using namespace std;
-using std::string;
+using std::ifstream, std::string, std::vector;
 
 class Lecturer
 {
@@ -101,73 +99,64 @@ public:
 
 };
 
+// The ampersand means the vector is passed in by reference.
 void getDataFromFile(vector<Lecturer>& lecturers) {
-
-    ifstream inFile;
+        ifstream inFile;
     inFile.open("CS_Lecturers.csv");
-    string header;
 
-    if (inFile) {
+    string header;
+    if (inFile)
+    {
         getline(inFile, header);
-        cout << header << endl;
     }
 
-    string name = "n/a", office = "n/a", nothing;
-    int class1 = -1, class2 = -2,class3 = -3,class4 = -4;
+    string name = "N/A", office = "N/A", nothing;
+    int class1 = -1, class2 = -2, class3 = -3, class4 = -4;
     char comma;
-
-    while (inFile && inFile.peek() != EOF) {
+    while (inFile && inFile.peek() != EOF)
+    {
         // Name
         getline(inFile, name, ',');
-        cout << name << endl;
 
         // Office
         getline(inFile, office, ',');
-        cout << office << endl;
 
-        // Class 1
+        // Class1
         inFile >> class1;
-        cout << class1 << endl;
         inFile >> comma;
 
-        // Class 2
+        // Class2
         inFile >> class2;
-        cout << class2 << endl;
         inFile >> comma;
 
-        // Class 3
+        // Class3
         inFile >> class3;
-        if (!inFile) {
-            // if there was no class3
+        if (!inFile)
+        {
+            // there was no class 4 for this entry
             class3 = -1;
             inFile.clear();
         }
-        cout << class3 << endl;
         inFile >> comma;
 
-        // CLass 4
+        // Class4
         inFile >> class4;
-        if (!inFile) {
-            // if there was no class4
+        if (!inFile)
+        {
+            // there was no class 4 for this entry
             class4 = -1;
             inFile.clear();
         } else {
-            // Read the newline character at the end of the line
-            // Note: we only have to do this if csv line end with numerical column
-
-            // using getline without a delimiter (third argument) will stop after
-            // consuming newline
-
-            getline(inFile,nothing);
+            // read newline char at end of the line
+            // NOTE: only have to do this if the dataset ends with a numerical column
+            // using getline without 3rd arg will stop at a newline char
+            getline(inFile, nothing);
         }
-        cout << class4 << endl;
 
-        // put the data from thsi liune of the file into a lecturer object
-
-        lecturers.push_back(Lecturer(name,office,class1,class2,class3,class4));
-
+        // Put the data from this line in the file into a lecturer object
+        // and add the object to the vector
+        lecturers.push_back(Lecturer(name, office, class1, class2, class3, class4));
     }
-
     inFile.close();
 }
 
